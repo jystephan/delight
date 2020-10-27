@@ -8,11 +8,11 @@ import org.apache.spark.{JsonProtocolProxy, SparkConf}
 import org.json4s.jackson.JsonMethods.{compact, render}
 
 
-class DataMechanicsListener(sparkConf: SparkConf) extends SparkListener with Logging {
+class DelightListener(sparkConf: SparkConf) extends SparkListener with Logging {
 
   private val heartbeatInterval = Configs.heartbeatInterval(sparkConf)
 
-  private val streamingConnector = DataMechanicsStreamingConnector.getOrCreate(sparkConf)
+  private val streamingConnector = DelightStreamingConnector.getOrCreate(sparkConf)
 
   /**
     * Has the heartbeat thread started
@@ -129,7 +129,7 @@ class DataMechanicsListener(sparkConf: SparkConf) extends SparkListener with Log
     */
   private def startIfNecessary(): Unit = {
     if(started.compareAndSet(false, true)) {
-      logInfo("Started DataMechanicsListener heartbeat thread")
+      logInfo("Started DelightListener heartbeat thread")
       val thread = new Thread {
         override def run() {
           while (true) {

@@ -23,7 +23,7 @@ import scala.collection.{immutable, mutable}
   * - Events are bufferized then send as gzip/base64 bulks as part of a Json Payload
   * - Exponential wait time before retry upon error
   */
-class DataMechanicsStreamingConnector(sparkConf: SparkConf) extends Logging {
+class DelightStreamingConnector(sparkConf: SparkConf) extends Logging {
 
   private val dmAppId = DmAppId(Configs.generateDMAppId(sparkConf))
   private val collectorURL = Configs.collectorUrl(sparkConf)
@@ -257,7 +257,7 @@ class DataMechanicsStreamingConnector(sparkConf: SparkConf) extends Logging {
     */
   private def startIfNecessary(): Unit = {
     if(started.compareAndSet(false, true)) {
-      logInfo("Started DataMechanicsStreamingConnector polling thread")
+      logInfo("Started DelightStreamingConnector polling thread")
       val thread = new Thread {
         override def run() {
           while (true) {
@@ -272,18 +272,18 @@ class DataMechanicsStreamingConnector(sparkConf: SparkConf) extends Logging {
 
 }
 
-object DataMechanicsStreamingConnector {
+object DelightStreamingConnector {
 
-  private var sharedConnector: Option[DataMechanicsStreamingConnector] = None
+  private var sharedConnector: Option[DelightStreamingConnector] = None
 
   /**
     * A connector common to the whole Scala application.
     *
     * - Will become useful if we have more than a SparkListener sending messages!
     */
-  def getOrCreate(sparkConf: SparkConf): DataMechanicsStreamingConnector = {
+  def getOrCreate(sparkConf: SparkConf): DelightStreamingConnector = {
     if(sharedConnector.isEmpty) {
-      sharedConnector = Option(new DataMechanicsStreamingConnector(sparkConf))
+      sharedConnector = Option(new DelightStreamingConnector(sparkConf))
     }
     sharedConnector.get
   }
