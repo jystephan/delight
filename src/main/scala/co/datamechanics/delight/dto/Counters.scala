@@ -1,4 +1,4 @@
-package co.datamechanics.listener.dto
+package co.datamechanics.delight.dto
 
 import org.json4s.JsonAST.JValue
 import org.json4s.JsonDSL._

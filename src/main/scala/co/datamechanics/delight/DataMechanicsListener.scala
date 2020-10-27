@@ -1,4 +1,4 @@
-package co.datamechanics.listener
+package co.datamechanics.delight
 
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -32,7 +32,7 @@ class DataMechanicsListener(sparkConf: SparkConf) extends SparkListener with Log
 
   /*
      The events that trigger a flush are the same as in org.apache.spark.scheduler.EventLoggingListener
-     (the listener that creates Spark event logs).
+     (the delight that creates Spark event logs).
      The only difference is that onBlockUpdated does not flush, to avoid flooding.
    */
 

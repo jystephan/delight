@@ -1,9 +1,9 @@
-package co.datamechanics.listener
+package co.datamechanics.delight
 
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 
-import co.datamechanics.listener.dto.{Counters, DmAppId, StreamingPayload}
+import co.datamechanics.delight.dto.{Counters, DmAppId, StreamingPayload}
 import org.apache.http.{HttpEntity, HttpResponse}
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpPost
