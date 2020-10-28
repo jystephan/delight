@@ -28,8 +28,21 @@ In the rest of this document, we assume that you have generated an API key on [D
 
 ### AWS EMR
 
-TODO
+They are 2 ways to run a EMR spark cluster (aka launch mode).
+This configuration will have a direct impact on how you install Delight
+#### Launch mode: Cluster
+You should follow the documentation about Spark submit
+#### Launch mode: Step execution
+Add a step of type `Spark application` then click on the `Configure` button
+![spark application step on EMR](documentation/images/emr_step.png)
 
+In the text box named `Spark-submit options`, you need to had the following lines:
+```java
+--packages co.datamechanics:delight_2.12:1.2.3
+--conf spark.extraListeners=co.datamechanics.delight.DelightListener
+--conf spark.delight.apiKey.secret=<your-api-key>
+```
+![configure spark application step on EMR](documentation/images/emr_step_configure.png)
 ### Databricks
 
 TODO
