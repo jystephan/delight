@@ -1,95 +1,31 @@
-# Data Mechanics Delight
+# Delight by Data Mechanics
 
-[Data Mechanics Delight](https://www.datamechanics.co/delight) is a replacement for the Spark UI to help debugging Spark performance.
+[Delight](https://www.datamechanics.co/delight) is a replacement for the Spark UI to help debug Spark performance.
 Read this [blog post](https://www.datamechanics.co/blog-post/building-a-better-spark-ui-data-mechanics-delight) to learn more about it.
 
-Data Mechanics Delight is not ready yet, we're actively working on it.
-Right now Data Mechanics Delight is a free Spark history server, and that's already a lot!
+While the blog post above details our vision, the project is still under active development.
+In the meantime Delight is a free Spark History Server.
 
-Because Delight is packaged as a [SparkListener](https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-scheduler-SparkListener.html), you can install it on any platform and you'll have a ready-to-use Spark history server for your past applications.
+Why? We know that many Spark users out there don't have a ready-to-use Spark History Server, because either their platform does not offer one or it is not made available to them.
+Yet a Spark History Server (short of a better alternative 🙂) is essential to understand the performance of Spark applications.
+
+That's why we wrote a [SparkListener](https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-scheduler-SparkListener.html) that is dead simple to install.
+It streams Spark events logs to our servers, and we host a Spark History Server for you, free of charge!
 
 ## Installation
 
-To install Data Mechanics Delight on your Spark application,
+To install Delight on your Spark application,
 
-- go to [Data Mechanics Delight](https://www.datamechanics.co/delight), create an account and generate an API key
-- instrument your Spark submit command or the equivalent for your platform to run Data Mechanics Delight
+- go to [Delight website](https://www.datamechanics.co/delight), create an account and generate an API key,
+- follow the installation steps for your platform.
 
-Below we detail instructions for different platforms:
-
-- AWS EMR
-- Databricks
-- Generic platform: Spark submit
-- Local run
+Here are the available instructions:
+- [hello world: local run with the `spark-submit` CLI](documentation/local_run.md)
+- [generic instructions for the `spark-submit` CLI](documentation/spark_submit.md)
+- [AWS EMR](documentation/aws_emr.md)
+- Databricks (TODO)
 
 Let us know if you'd like instructions for other platforms!
-
-In the rest of this document, we assume that you have generated an API key on [Data Mechanics Delight](https://www.datamechanics.co/delight).
-
-### AWS EMR
-
-They are 2 ways to run a EMR spark cluster (aka launch mode).
-This configuration will have a direct impact on how you install Delight
-#### Launch mode: Cluster
-You should follow the documentation about Spark submit
-#### Launch mode: Step execution
-Add a step of type `Spark application` then click on the `Configure` button
-![spark application step on EMR](documentation/images/emr_step.png)
-
-In the text box named `Spark-submit options`, you need to had the following lines:
-```java
---packages co.datamechanics:delight_2.12:1.2.3
---conf spark.extraListeners=co.datamechanics.delight.DelightListener
---conf spark.delight.apiKey.secret=<your-api-key>
-```
-![configure spark application step on EMR](documentation/images/emr_step_configure.png)
-### Databricks
-
-TODO
-
-### Generic platform: Spark submit
-
-If you run Spark applications directly with the [`spark-submit` CLI](https://spark.apache.org/docs/latest/submitting-applications.html#launching-applications-with-spark-submit), please add the following to your CLI options:
-
-- `--packages co.datamechanics:delight_2.12:1.2.3` (TODO)
-- `--conf spark.delight.apiKey.secret=<your-api-key>`
-
-A real-world example of submission instrumented with Data Mechanics Delight would look like this:
-
-```bash
-# From the root folder of a Spark distribution
-./bin/spark-submit \
-  --class org.apache.spark.examples.SparkPi \
-  --master yarn \
-  --packages co.datamechanics:delight_2.12:1.2.3 \ # TODO
-  --conf spark.delight.apiKey.secret=<replace-with-your-api-key> \
-  --conf spark.extraListeners=co.datamechanics.delight.DelightListener \
-  --deploy-mode cluster \
-  --executor-memory 20G \
-  --num-executors 50 \
-  /path/to/examples.jar \
-  1000
-```
-
-### Local run
-
-You can try Data Mechanics Delight with a local run on your machine.
-
-Just [download a Spark distribution](https://spark.apache.org/downloads.html) and run an instrumented Spark submit from the root folder.
-
-Here's a working example for Spark 3.0.1:
-
-```bash
-# From the root folder of the Spark 3.0.1 distribution
-./bin/spark-submit \
-  --class org.apache.spark.examples.SparkPi \
-  --master 'local[2]' \
-  --packages co.datamechanics:delight_2.12:1.2.3 \ # TODO
-  --conf spark.delight.apiKey.secret=<replace-with-your-api-key> \
-  --conf spark.extraListeners=co.datamechanics.delight.DelightListener \
-  examples/jars/spark-examples_2.12-3.0.1.jar \
-  100
-```
 
 ## Data Mechanics Delight configurations
 
